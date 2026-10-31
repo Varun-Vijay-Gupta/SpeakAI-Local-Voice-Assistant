@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; worker-src 'self';"
+    />
+    <title>SpeakAI - Local Voice Assistant</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="brand">
+        <span class="logo" aria-hidden="true"></span>
+        <div>
+          <h1>SpeakAI</h1>
+          <p>Local voice assistant</p>
+        </div>
+      </div>
+      <div class="status">
+        <button id="whisper-status" class="chip" type="button" title="Click to reload the Whisper model">
+          <span class="dot" id="whisper-dot"></span>
+          <span id="whisper-text">Whisper: idle</span>
+        </button>
+        <button id="ollama-status" class="chip" type="button" title="Click to re-check Ollama">
+          <span class="dot" id="ollama-dot"></span>
+          <span id="ollama-text">Ollama: checking</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="controls">
+      <button id="btn-start" class="btn btn-primary" type="button">
+        <span class="glyph">&#9679;</span> Start
+      </button>
+      <button id="btn-stop" class="btn btn-stop" type="button" disabled>
+        <span class="glyph">&#9632;</span> Stop
+      </button>
+
+      <div class="meter" aria-hidden="true"><span id="level"></span></div>
+      <span id="timer" class="timer">00:00</span>
+
+      <div class="spacer"></div>
+
+      <label class="field">
+        <span>Whisper model</span>
+        <select id="whisper-model">
+          <option value="onnx-community/whisper-base">whisper-base (balanced)</option>
+          <option value="onnx-community/whisper-small">whisper-small (accurate)</option>
+          <option value="onnx-community/whisper-tiny">whisper-tiny (fast)</option>
+          <option value="onnx-community/whisper-base.en">whisper-base.en (English)</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Language</span>
+        <select id="language">
+          <option value="">Auto detect</option>
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="fr">French</option>
+          <option value="de">German</option>
+          <option value="hi">Hindi</option>
+          <option value="pt">Portuguese</option>
+          <option value="it">Italian</option>
+          <option value="ja">Japanese</option>
+          <option value="zh">Chinese</option>
+        </select>
+      </label>
+
+      <label class="field">
+        <span>Ollama model</span>
+        <select id="llm-model">
+          <option value="">(none found)</option>
+        </select>
+      </label>
+    </section>
+
+    <main class="layout">
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Transcript</h2>
+          <div class="panel-actions">
+            <label class="toggle" title="Ask Ollama automatically after every answer">
+              <input type="checkbox" id="auto-suggest" />
+              <span>Auto answer</span>
+            </label>
+            <button id="btn-clear" class="btn btn-ghost" type="button">Clear</button>
+          </div>
+        </div>
+        <div id="transcript" class="scroll">
+          <p class="placeholder">Press <strong>Start</strong> and speak. Your words appear here as they are recognised - all on this machine.</p>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <h2>Suggested answer</h2>
+          <div class="panel-actions">
+            <button id="btn-suggest" class="btn btn-accent" type="button" disabled>Suggest Answer</button>
+            <button id="btn-abort" class="btn btn-ghost" type="button" hidden>Stop</button>
+          </div>
+        </div>
+        <div id="answer" class="scroll">
+          <p class="placeholder">Ask a question out loud, then press <strong>Suggest Answer</strong> to let your local LLM reply.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span id="footer-info">SpeakAI</span>
+      <span>Audio never leaves this device.</span>
+    </footer>
+
+    <script src="renderer.js"></script>
+  </body>
+</html>
